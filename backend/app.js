@@ -14,6 +14,7 @@ app.use(cookieParser())
 app.use(cors())
 
 app.get('/', (req, res) => {
+    console.log(req.headers.host)
     res.send("It works")
 })
 

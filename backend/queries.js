@@ -7,14 +7,6 @@ const pool = new Pool({
     port: 5432,
 })
 
-pool.query("SELECT * FROM table_name", (error, results) => {
-    if (error) {
-        console.log(error)
-    } else {
-        console.log(results.rows)
-    }
-})
-
 function getUsers(req,res)
 {
     pool.query("SELECT * FROM users_table", (error, results) => {
