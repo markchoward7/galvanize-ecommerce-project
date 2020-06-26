@@ -33,17 +33,17 @@ CREATE TABLE purchased_orders
     id serial primary key,
     users_id integer references users(id),
     manufacturers_id integer references manufacturers(id),
-     date_ordered timestamp,
-      date_received timestamp
+    date_ordered timestamp,
+    date_received timestamp
 
 );
 CREATE TABLE sale_orders 
 (
     id serial primary key,
-     date_ordered timestamp,
-     users_id integer references users(id),
+    date_ordered timestamp,
+    users_id integer references users(id),
     customers_id integer references customers(id),
-      date_received timestamp
+    date_received timestamp
 );
 CREATE TABLE purchase_order_items
 (

@@ -15,46 +15,53 @@ app.use(cors())
 
 app.get('/', (req, res) => {
     console.log(req.headers.host)
-    res.send("It works")
+    res.send("It's alive!")
 })
+
 app.get('/users', (req, res) => {
     queries.getUsers(req,res);
 })
 app.post('/users', (req,res) =>{
     queries.createNewUser(req,res);
 })
+
 app.get('/manufacturers', (req, res) => {
     queries.getManufacturers(req,res);
 })
 app.post('/manufacturers', (req,res) =>{
     queries.createNewManufacturer(req,res);
 })
+
 app.get('/customers', (req, res) => {
     queries.getCustomers(req,res);
 })
 app.post('/customers', (req,res) =>{
     queries.createNewCustomer(req,res);
 })
+
 app.get('/items', (req, res) => {
     queries.getItems(req,res);
 })
 app.post('/items', (req,res) =>{
-    queries.createNewItems(req,res);
+    queries.createNewItem(req,res);
 })
+
 app.get('/purchase-orders', (req, res) => {
     queries.getPurchaseOrders(req,res);
 })
 app.post('/purchase-orders', (req,res) =>{
     queries.createNewPurchaseOrder(req,res);
 })
+
 app.get('/sale-orders', (req, res) => {
     queries.getSalesOrders(req,res);
 })
 app.post('/sale-orders', (req,res) =>{
     queries.createNewSaleOrder(req,res);
 })
+
 app.get('/user/:id', (req, res) => {
-    queries.getUsersById(req,res);
+    queries.getUserById(req,res);
 })
 app.delete('/user/:id', (req, res)=>
 {
@@ -82,7 +89,7 @@ app.get('/customer/:id', (req, res) => {
 })
 app.delete('/customer/:id', (req, res)=>
 {
-    queries.deleteCustomers(req,res);
+    queries.deleteCustomer(req,res);
 })
 app.put('/customer/:id', (req, res)=>
 {
@@ -90,15 +97,18 @@ app.put('/customer/:id', (req, res)=>
 })
 
 app.get('/sale-order/:id', (req, res) => {
-    queries.getSaleOrdersById(req,res);
+    queries.getSaleOrderById(req,res);
 })
 app.delete('/sale-order/:id', (req, res)=>
 {
-    queries.deleteSaleOrders(req,res);
+    queries.deleteSaleOrder(req,res);
 })
 app.put('/sale-order/:id', (req, res)=>
 {
-    queries.updateSaleOrders(req,res);
+    queries.updateSaleOrder(req,res);
+})
+app.post('/sale-order/:id', (req, res) => {
+    queries.addItemToSaleOrder(req, res);
 })
 
 app.get('/purchase-order/:id', (req, res) => {
@@ -106,11 +116,14 @@ app.get('/purchase-order/:id', (req, res) => {
 })
 app.delete('/purchase-order/:id', (req, res)=>
 {
-    queries.deletePurchasedOrders(req,res);
+    queries.deletePurchaseOrder(req,res);
 })
 app.put('/purchase-order/:id', (req, res)=>
 {
-    queries.updatePurchaseOrders(req,res);
+    queries.updatePurchaseOrder(req,res);
+})
+app.post('/purchase-order/:id', (req, res) => {
+    queries.addItemToPurchaseOrder(req, res);
 })
 
 app.get('/item/:id', (req,res) =>{
@@ -118,11 +131,11 @@ app.get('/item/:id', (req,res) =>{
 })
 app.delete('/item/:id', (req, res)=>
 {
-    queries.deleteItems(req,res);
+    queries.deleteItem(req,res);
 })
 app.put('/item/:id', (req, res)=>
 {
-    queries.updateItems(req,res);
+    queries.updateItem(req,res);
 })
 
 
