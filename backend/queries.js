@@ -7,10 +7,6 @@ const pool = new Pool({
     port: 5432,
 })
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 0df07a91598823aa28400ad83b52ee4f74d9e00d
 function getUsers(req,res)
 {
     pool.query("SELECT * FROM users", (error, results) => {
