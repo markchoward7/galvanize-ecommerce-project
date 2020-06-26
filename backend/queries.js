@@ -15,6 +15,15 @@ pool.query("SELECT * FROM table_name", (error, results) => {
     }
 })
 
-exports.modules = {
-
+function getUsers(req,res)
+{
+    pool.query("SELECT * FROM users_table", (error, results) => {
+        if (error) {
+            console.log(error)
+        } else {
+            res.send(results.rows)
+        }
+    })
 }
+
+exports.getUsers = getUsers;
