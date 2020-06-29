@@ -83,6 +83,10 @@ app.put('/manufacturer/:id', (req, res)=>
 {
     queries.updateManufacturer(req,res);
 })
+app.post('/manufacturer/:id', (req,res) =>
+{
+    queries.addItemToManufacturer(req,res);
+})
 
 app.get('/customer/:id', (req, res) => {
     queries.getCustomerById(req,res);

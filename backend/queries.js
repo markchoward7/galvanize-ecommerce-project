@@ -86,24 +86,63 @@ function getSalesOrders(req,res)
 }
 function getManufacturerById(req,res)
 {
-    pool.query("SELECT * FROM manufacturers WHERE id = $1 ", [req.params.id], (error, results) => {
+    pool.query("SELECT * FROM manufacturers INNER JOIN (manufacturers_items INNER JOIN items ON items.id = manufacturers_items.item_id) ON manufacturers_items.manufacturer_id = manufacturers.id WHERE manufacturers.id = $1 ", [req.params.id], (error, results) => {
         if (error) {
             console.log(error)
             res.status(400).send()
         } else {
-            res.send(results.rows)   
+            let newObj = {...results.rows[0]}
+            newObj.id = req.params.id
+            delete newObj.item_id
+            delete newObj.manufacturer_id
+            delete newObj.qty
+            delete newObj.names
+            delete newObj.descriptions
+            newObj.items = []
+            for (const row of results.rows) {
+                let newItem = {
+                    item_id: row.item_id,
+                    item: `http://${req.headers.host}/item/${row.item_id}`,
+                    name: row.names,
+                    description: row.descriptions,
+                    qty: row.qty,
+                }
+                newObj.items.push(newItem)
+            }
+            res.send(newObj)
+        
         }
     })
 }
 function getItemById(req,res)
 {
-    pool.query("SELECT * FROM items WHERE id = $1 ", [req.params.id], (error, results) => {
+    pool.query("SELECT * FROM items INNER JOIN (manufacturers_items INNER JOIN manufacturers ON manufacturers.id = manufacturers_items.manufacturer_id) ON manufacturers_items.item_id = items.id WHERE items.id = $1 ", [req.params.id], (error, results) => {
         if (error) {
             console.log(error)
             res.status(400).send()
         } else {
-            res.send(results.rows)
-            
+            let newObj = {...results.rows[0]}
+            newObj.id = req.params.id
+            delete newObj.item_id
+            delete newObj.manufacturer_id
+            delete newObj.company_name
+            delete newObj.contact_name
+            delete newObj.contact_email
+            delete newObj.contact_phone
+            newObj.manufacturers = []
+            for (const row of results.rows) {
+                let newItem = {
+                    manufacturer_id: row.manufacturer_id,
+                    manufacturer: `http://${req.headers.host}/manufacturer/${row.manufacturer_id}`,
+                    company_name: row.company_name,
+                    contact_name: row.contact_name,
+                    contact_email: row.contact_email,
+                    contact_phone: row.contact_phone,
+                }
+                newObj.manufacturers.push(newItem)
+            }
+            res.send(newObj)
+        
         }
     })
 }
@@ -137,8 +176,9 @@ function getPurchaseOrderById(req,res)
             res.status(400).send()
         } else {
             let newObj = {...results.rows[0]}
+            newObj.id = req.params.id
             delete newObj.item_id
-            delete newObj.purchase_id,
+            delete newObj.purchase_id
             delete newObj.qty
             delete newObj.names
             delete newObj.descriptions
@@ -148,7 +188,7 @@ function getPurchaseOrderById(req,res)
             for (const row of results.rows) {
                 let newItem = {
                     item_id: row.item_id,
-                    item: `http://${req.headers.host}/user/${row.item_id}`,
+                    item: `http://${req.headers.host}/item/${row.item_id}`,
                     name: row.names,
                     description: row.descriptions,
                     qty: row.qty,
@@ -168,18 +208,19 @@ function getSaleOrderById(req,res)
             res.status(400).send()
         } else {
             let newObj = {...results.rows[0]}
+            newObj.id = req.params.id
             delete newObj.item_id
-            delete newObj.sale_id,
+            delete newObj.sale_id
             delete newObj.qty
             delete newObj.names
             delete newObj.descriptions
             newObj.user = `http://${req.headers.host}/user/${results.rows[0].users_id}`;
-            newObj.manufacturer = `http://${req.headers.host}/customer/${results.rows[0].customers_id}`
+            newObj.customer = `http://${req.headers.host}/customer/${results.rows[0].customers_id}`
             newObj.items = []
             for (const row of results.rows) {
                 let newItem = {
                     item_id: row.item_id,
-                    item: `http://${req.headers.host}/user/${row.item_id}`,
+                    item: `http://${req.headers.host}/item/${row.item_id}`,
                     name: row.names,
                     description: row.descriptions,
                     qty: row.qty,
@@ -469,6 +510,20 @@ function addItemToSaleOrder(req, res)
         }
     })
 }
+function addItemToManufacturer(req,res)
+{
+    pool.query("INSERT INTO manufacturers_items(item_id, manufacturer_id) VALUES($1,$2)", [req.body.itemId, req.params.id], (error,result) =>{
+        if(error)
+        {
+            console.log(error)
+            res.status(400).send()
+        }
+        else
+        {
+            res.status(202).send()
+        }
+    })
+}
 
 
 
@@ -504,3 +559,4 @@ exports.updatePurchaseOrder = updatePurchaseOrder;
 exports.updateSaleOrder = updateSaleOrder;
 exports.addItemToPurchaseOrder = addItemToPurchaseOrder;
 exports.addItemToSaleOrder = addItemToSaleOrder;
+exports.addItemToManufacturer = addItemToManufacturer;
