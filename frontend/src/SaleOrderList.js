@@ -2,33 +2,21 @@ import React from 'react';
 import SaleOrder from './SaleOrder';
 import NewSaleOrder from './NewSaleOrder';
 import {
-    BrowserRouter as Router,
-    Switch,
     Route,
     Link
   } from 'react-router-dom'
   
-function SaleOrderList(props)
+function SaleOrderList({saleOrders, parent})
 {
-
-    
     return(
-        <Router>
-            <Link to = "/sale-orders/new"> New Sale Order</Link>
-    <Route exact path = "/sale-orders">
-    <div>
-        {
-           
-            props.saleOrder.map(saleOrder => <SaleOrder saleOrder= {saleOrder}/>) 
-        
-
-        }
-    </div>
-         </Route>
-         <Route path = "/sale-orders/new"> 
-         <NewSaleOrder grandparent = {props.parent}/> </Route>
-   
-    </Router>
+        <div>
+            <Link to = "/sale-orders/new">New Sale Order</Link>
+            <Route exact path = "/sale-orders"><div>
+                {saleOrders.map(saleOrder => <SaleOrder saleOrder= {saleOrder}/>)}
+            </div></Route>
+         
+            <Route path = "/sale-orders/new" render={props => <NewSaleOrder {...props} grandparent={parent} />} /> 
+        </div>
     )
 }
 export default SaleOrderList;

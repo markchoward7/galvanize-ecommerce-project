@@ -4,7 +4,6 @@ const axios = require('axios').default;
 
 function NewSaleOrder(props)
 {
-    
     const [state, setState] = useState({
         userId: '',
         customerId: '',
@@ -12,12 +11,13 @@ function NewSaleOrder(props)
         dateReceived: '',
         grandparent: props.grandparent
     })
+
+
     const handleChange = event => setState({
         ...state, 
         [event.target.name]: event.target.value
         
     })
-
 
     const handleSubmit = () => { 
         let newSaleOrder = {
@@ -26,31 +26,29 @@ function NewSaleOrder(props)
             date_ordered: state.dateOrdered,
             date_received: state.dateReceived
         }
-        var response = axios.post("/api/sale-orders", JSON.stringify({
-
+        axios.post("/api/sale-orders", JSON.stringify({
             userId: state.userId,
             customerId: state.customerId,
             dateOrdered: state.dateOrdered,
             dateReceived: state.dateReceived
         }))
         state.grandparent.setState({
-
-        saleOrders: [...state.grandparent.state.saleOrders,newSaleOrder]
-
-    })}
+            saleOrders: [...state.grandparent.state.saleOrders,newSaleOrder]
+        })
+        props.history.push("/sale-orders")
+    }
    
    
     return(
-<div>
-    <input type = "text" name = "userId" onChange = {handleChange}/>
-    <input type = "text" name = "customerId"  onChange = {handleChange}/>
-    <input type = "date" name = "dateOrdered"  onChange = {handleChange}/>
-    <input type = "date" name = "dateReceived"  onChange = {handleChange}/>
+        <div>
+            <input type = "text" name = "userId" onChange = {handleChange}/>
+            <input type = "text" name = "customerId"  onChange = {handleChange}/>
+            <input type = "date" name = "dateOrdered"  onChange = {handleChange}/>
+            <input type = "date" name = "dateReceived"  onChange = {handleChange}/>
 
-    <button onClick = {handleSubmit}> Submit </button>
-</div>
-        )
-
+            <button onClick = {handleSubmit}> Submit </button>
+        </div>
+    )
 }
 
 

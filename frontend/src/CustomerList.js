@@ -1,17 +1,22 @@
 import React from 'react';
 import Customer from './Customer';
-function CustomerList(props)
+import NewCustomer from './NewCustomer';
+import {
+    Route,
+    Link
+  } from 'react-router-dom'
+  
+function CustomerList({customers, parent})
 {
-    
-    return(
-    <div>
-        {
-           
-            props.customers.map(customers => <Customer customer= {customers}/>) 
+    return (
+        <div>
+            <Link to = "/customers/new">New Customer</Link>
+            <Route exact path = "/customers"><div>
+                {customers.map(customers => <Customer customer= {customers}/>)}
+            </div></Route>
 
-        }
-    </div>
+            <Route path = "/customers/new" render={props => <NewCustomer {...props} grandparent={parent} />} /> 
+        </div>
     )
 }
 export default CustomerList;
-

@@ -5,9 +5,9 @@ function User(props)
 
     return(
         <div className = "item">
-            <p>{props.users.first_name}</p>
-            <p>{props.users.last_name}</p>
-            <p>{props.users.email}</p>
+            <p>{props.user.first_name}</p>
+            <p>{props.user.last_name}</p>
+            <p>{props.user.email}</p>
         </div>
     )
 }

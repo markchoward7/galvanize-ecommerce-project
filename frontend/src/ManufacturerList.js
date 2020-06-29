@@ -1,17 +1,22 @@
 import React from 'react';
 import Manufacturer from './Manufacturer';
-function ManufacturerList(props)
+import NewManufacturer from './NewManufacturer';
+import {
+    Route,
+    Link
+  } from 'react-router-dom'
+  
+function CustomerList({manufacturers, parent})
 {
-    
-    return(
-    <div>
-        {
-           
-            props.manufacturers.map(manufacturers => <Manufacturer manufacturer= {manufacturers}/>) 
+    return (
+        <div>
+            <Link to = "/manufacturers/new">New Manufacturer</Link>
+            <Route exact path = "/manufacturers"><div>
+                {manufacturers.map(manufacturer => <Manufacturer manufacturer= {manufacturer}/>)}
+            </div></Route>
 
-        }
-    </div>
+            <Route path = "/manufacturers/new" render={props => <NewManufacturer {...props} grandparent={parent} />} /> 
+        </div>
     )
 }
-export default ManufacturerList;
-
+export default CustomerList;

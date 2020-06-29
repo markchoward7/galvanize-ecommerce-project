@@ -2,33 +2,21 @@ import React from 'react';
 import User from './User';
 import NewUser from './NewUser';
 import {
-    BrowserRouter as Router,
-    Switch,
     Route,
     Link
   } from 'react-router-dom'
   
-function UserList(props)
+function UserList({users, parent})
 {
+    return (
+        <div>
+            <Link to = "/users/new">Add User</Link>
+            <Route exact path = "/users"><div>
+                {users.map(user => <User user = {user}/>)}
+            </div></Route>
 
-    
-    return(
-        <Router>
-            <Link to = "/users/new"> Add User</Link>
-    <Route exact path = "/users">
-    <div>
-        {
-           
-            props.users.map(users => <User users= {users}/>) 
-        
-
-        }
-    </div>
-         </Route>
-         <Route path = "/users/new"> 
-         <NewUser grandparent = {props.parent}/> </Route>
-   
-    </Router>
+            <Route path = "/users/new" render={props => <NewUser {...props} grandparent={parent} />} /> 
+        </div>
     )
 }
 export default UserList;

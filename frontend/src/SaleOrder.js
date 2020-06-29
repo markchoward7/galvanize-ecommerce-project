@@ -2,7 +2,6 @@ import React from 'react';
 
 function SaleOrder(props)
 {
-console.log(props)
     return(
         <div className = "item">
             <p>{props.saleOrder.users_id}</p>
